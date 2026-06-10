@@ -195,9 +195,9 @@ const WEIGHT_COST = 5;
 const ALGO_INFO = {
   astar:    {html: '<strong>A*</strong> expands the node minimizing g(n) + h(n): cost so far plus a Manhattan-distance estimate to the target. The heuristic focuses the search toward the goal without losing optimality.', opt: true},
   dijkstra: {html: '<strong>Dijkstra</strong> always expands the unvisited node with the lowest total cost from the start. It explores uniformly in every direction and is the classic guaranteed-shortest-path algorithm.', opt: true},
-  greedy:   {html: '<strong>Greedy Best-First</strong> expands whichever node looks closest to the target by heuristic alone, ignoring path cost so far. Very fast, easily fooled by walls.', opt: false},
+  greedy:   {html: '<strong>Greedy Best-First</strong> expands whichever node the heuristic estimates is closest to the target, ignoring path cost so far. It is fast but can be misled by obstacles.', opt: false},
   bfs:      {html: '<strong>Breadth-First Search</strong> expands nodes in rings of increasing hop count. Optimal when every step costs the same, so it ignores weights.', opt: false},
-  dfs:      {html: '<strong>Depth-First Search</strong> dives down one corridor as far as it can before backtracking. It finds a path, almost never the short one. Included as a cautionary tale.', opt: false},
+  dfs:      {html: '<strong>Depth-First Search</strong> explores one branch as far as possible before backtracking. It finds a path when one exists but rarely a short one.', opt: false},
 };
 const SPEEDS = [{label: 'slow', batch: 1, delay: 18}, {label: 'medium', batch: 3, delay: 8}, {label: 'fast', batch: 8, delay: 4}];
 
