@@ -485,7 +485,7 @@ onSpeedChange();
         document.getElementById('gpuDot').className = 'gd ' + (s === 'ready' || s === 'busy' ? s : '');
         var t = document.getElementById('gpuTxt');
         t.className = 'gt ' + (s === 'ready' || s === 'busy' ? s : '');
-        t.textContent = s === 'ready' ? 'RTX 5080 Ready' : s === 'busy' ? 'GPU Busy' : 'GPU Offline';
+        t.textContent = s === 'ready' ? 'GPU Online' : s === 'busy' ? 'GPU Busy' : 'GPU Offline';
       }).catch(function(){
         document.getElementById('gpuTxt').textContent = 'GPU Offline';
       });
