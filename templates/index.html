@@ -4,14 +4,14 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
   <link rel="icon" type="image/png" href="/static/logo.png" />
   <title>Pathfinding Visualizer - SPB Data Science Club</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#090909;--surface:#141414;--surface-2:#1a1a1a;--border:#222;--border-l:#2e2e2e;--text:#ebebeb;--dim:#aaa;--muted:#666;--accent:#8b0044;--accent2:#660033;--start:#4ade80;--target:#c4006a;--visited:#16263d;--frontier:#1d3a5f;--path:#e3b341;--radius:10px}
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+    :root{--bg:#0c1322;--surface:#141f36;--surface-2:#18233c;--border:#22304d;--border-l:#2c3b5e;--text:#e9eef8;--dim:#b4c1d8;--muted:#6e7f9d;--accent:#6494e8;--accent2:#3f74d4;--start:#4ade80;--target:#6494e8;--visited:#16263d;--frontier:#1d3a5f;--path:#e3b341;--radius:10px}
+    body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
 
     .shell{display:grid;grid-template-columns:290px 1fr;min-height:100vh}
-    .sidebar{background:#0d0d0d;border-right:1px solid var(--border);padding:1.6rem 1.3rem;display:flex;flex-direction:column;gap:1.15rem;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sidebar{background:#0a101c;border-right:1px solid var(--border);padding:1.6rem 1.3rem;display:flex;flex-direction:column;gap:1.15rem;position:sticky;top:0;height:100vh;overflow-y:auto}
     .main{padding:1.75rem 2rem;display:flex;flex-direction:column;min-width:0}
 
     .logo{display:flex;align-items:center;gap:.7rem}
@@ -29,19 +29,19 @@
     .g-no{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.22)}
 
     .range-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem}
-    .range-val{font-size:.76rem;font-family:'JetBrains Mono',monospace;color:#c4006a}
+    .range-val{font-size:.76rem;font-family:'JetBrains Mono',monospace;color:#6494e8}
     input[type=range]{width:100%;accent-color:var(--accent2);cursor:pointer}
 
     .tool-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem}
     .tool-btn{padding:.45rem .3rem;border-radius:6px;font-size:.74rem;font-weight:600;text-align:center;cursor:pointer;border:1px solid var(--border-l);color:var(--dim);background:var(--surface-2);transition:all .15s;font-family:inherit}
-    .tool-btn.active{background:rgba(102,0,51,.3);border-color:rgba(139,0,68,.5);color:#fff}
+    .tool-btn.active{background:rgba(63,116,212,.3);border-color:rgba(100,148,232,.5);color:#fff}
 
     .btn{width:100%;padding:.62rem;border:none;border-radius:8px;font-size:.88rem;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s}
     .btn-primary{background:var(--accent2);color:#fff}
     .btn-primary:hover{background:var(--accent)}
     .btn-primary:disabled{opacity:.5;cursor:default}
     .btn-ghost{background:var(--surface-2);color:var(--dim);border:1px solid var(--border-l);margin-top:.4rem}
-    .btn-ghost:hover:not(:disabled){color:var(--text);border-color:#3a3a3a}
+    .btn-ghost:hover:not(:disabled){color:var(--text);border-color:#38486e}
     .btn-ghost:disabled{opacity:.5;cursor:default}
 
     .legend{display:grid;grid-template-columns:1fr 1fr;gap:.4rem .6rem}
@@ -55,8 +55,8 @@
 
     .grid-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem;flex:1;display:flex;align-items:center;justify-content:center;user-select:none}
     #grid{display:grid;gap:1px;background:transparent}
-    .cell{width:var(--cell,22px);height:var(--cell,22px);background:#101010;border-radius:2.5px;cursor:pointer;position:relative;transition:background .12s}
-    .cell.wall{background:#2e2e2e;animation:pop .18s ease}
+    .cell{width:var(--cell,22px);height:var(--cell,22px);background:#101a2e;border-radius:2.5px;cursor:pointer;position:relative;transition:background .12s}
+    .cell.wall{background:#2c3b5e;animation:pop .18s ease}
     .cell.weight::after{content:'';position:absolute;inset:35%;border-radius:50%;background:#5a4a16}
     .cell.visited{background:var(--visited);animation:visitIn .4s ease}
     .cell.visited.weight::after{background:#7a6420}
@@ -72,11 +72,11 @@
 
     @media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}.stats-bar{grid-template-columns:1fr 1fr}}
 
-    .gpu-status-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.28rem .7rem;border-radius:999px;border:1px solid #2a2a2a;background:#181818;font-size:.72rem;font-weight:600;letter-spacing:.03em;cursor:default;white-space:nowrap;width:fit-content}
-    .gpu-status-pill .gd{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:#444}
+    .gpu-status-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.28rem .7rem;border-radius:999px;border:1px solid #2c3b5e;background:#141f36;font-size:.72rem;font-weight:600;letter-spacing:.03em;cursor:default;white-space:nowrap;width:fit-content}
+    .gpu-status-pill .gd{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:#3d4d6e}
     .gpu-status-pill .gd.ready{background:#4ade80;box-shadow:0 0 5px #4ade8077;animation:gpuGlow 2s ease-in-out infinite}
     .gpu-status-pill .gd.busy{background:#fbbf24;box-shadow:0 0 5px #fbbf2477;animation:gpuGlow 1s ease-in-out infinite}
-    .gpu-status-pill .gt{color:#555}
+    .gpu-status-pill .gt{color:#5d6f8f}
     .gpu-status-pill .gt.ready{color:#4ade80}
     .gpu-status-pill .gt.busy{color:#fbbf24}
     @keyframes gpuGlow{0%,100%{opacity:1}50%{opacity:.35}}
@@ -90,13 +90,13 @@
     .rotate-hint.dismissed{display:none}
     .rotate-hint svg{animation:rotateBob 2.4s ease-in-out infinite}
     @keyframes rotateBob{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
-    .rotate-hint-title{font-size:1.1rem;font-weight:800;color:#ebebeb}
-    .rotate-hint-sub{font-size:.85rem;color:#999;line-height:1.6;max-width:300px}
-    .rotate-hint-btn{margin-top:.4rem;padding:.6rem 1.4rem;background:#660033;color:#fff;border:none;border-radius:8px;font-size:.85rem;font-weight:600;font-family:inherit;cursor:pointer}
+    .rotate-hint-title{font-size:1.1rem;font-weight:800;color:#e9eef8}
+    .rotate-hint-sub{font-size:.85rem;color:#9fb0cb;line-height:1.6;max-width:300px}
+    .rotate-hint-btn{margin-top:.4rem;padding:.6rem 1.4rem;background:#3f74d4;color:#fff;border:none;border-radius:8px;font-size:.85rem;font-weight:600;font-family:inherit;cursor:pointer}
   }
   </style>
   <div class="rotate-hint" id="rotateHint">
-    <svg width="44" height="64" viewBox="0 0 24 36" fill="none" stroke="#8b0044" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="18" height="32" rx="3"/><line x1="9" y1="30" x2="15" y2="30"/></svg>
+    <svg width="44" height="64" viewBox="0 0 24 36" fill="none" stroke="#6494e8" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="18" height="32" rx="3"/><line x1="9" y1="30" x2="15" y2="30"/></svg>
     <div class="rotate-hint-title">This one works best in landscape</div>
     <div class="rotate-hint-sub">Rotate your phone sideways for the full board, or continue anyway in portrait.</div>
     <button class="rotate-hint-btn" onclick="document.getElementById('rotateHint').classList.add('dismissed')">Continue in portrait</button>
@@ -155,8 +155,8 @@
       <div class="legend">
         <div class="legend-item"><span class="legend-chip" style="background:var(--start);border-radius:50%"></span>Start</div>
         <div class="legend-item"><span class="legend-chip" style="background:var(--target);border-radius:50%"></span>Target</div>
-        <div class="legend-item"><span class="legend-chip" style="background:#2e2e2e"></span>Wall</div>
-        <div class="legend-item"><span class="legend-chip" style="background:#101010;position:relative"><span style="position:absolute;inset:32%;border-radius:50%;background:#5a4a16"></span></span>Weight (cost 5)</div>
+        <div class="legend-item"><span class="legend-chip" style="background:#2c3b5e"></span>Wall</div>
+        <div class="legend-item"><span class="legend-chip" style="background:#101a2e;position:relative"><span style="position:absolute;inset:32%;border-radius:50%;background:#5a4a16"></span></span>Weight (cost 5)</div>
         <div class="legend-item"><span class="legend-chip" style="background:var(--visited)"></span>Visited</div>
         <div class="legend-item"><span class="legend-chip" style="background:var(--path)"></span>Shortest path</div>
       </div>
